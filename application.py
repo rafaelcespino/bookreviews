@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session
+from flask import Flask, session, render_template, request
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -22,4 +22,25 @@ db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
 def index():
-    return "Project 1: TODO"
+    books = db.execute("SELECT * FROM books").fetchall()
+    users = db.execute("SELECT * FROM users").fetchall()
+    reviews = db.execute("SELECT * FROM reviews").fetchall()
+    return render_template("index.html")
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        name = request.form.get("name")
+
+        db.execute("INSERT INTO users (username, password, name) VALUES (:username, :password, :name)",
+                    {"username": username, "password": password, "name": name})
+        db.commit()
+        return render_template("success.html")
+    
+    elif request.method == "GET":
+        return render_template("register.html")
+
+    

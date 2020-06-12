@@ -2,7 +2,7 @@ CREATE TABLE books (
     book_id SERIAL PRIMARY KEY,
     author VARCHAR NOT NULL,
     title VARCHAR NOT NULL,
-    ISBN INTEGER NOT NULL,
+    ISBN VARCHAR NOT NULL,
     year INTEGER NOT NULL
 );
 
