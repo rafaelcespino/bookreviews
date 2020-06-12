@@ -43,4 +43,21 @@ def register():
     elif request.method == "GET":
         return render_template("register.html")
 
-    
+@app.route("/login", methods=["GET", "POST"])
+def login():
+
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        users = db.execute("SELECT * FROM users WHERE username = :username", {"username": username})
+        user = users.fetchone()
+
+        if user == None or user[1] != password:
+            return render_template("invalid.html")
+        else:
+            return render_template("success.html")
+
+
+    elif request.method == "GET":
+        return render_template("login.html")
