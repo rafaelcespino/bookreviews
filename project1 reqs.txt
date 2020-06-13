@@ -1,6 +1,9 @@
 DATABASE URI:  
 postgres://idcwbdswzzaujj:5b3e32f5ffd1c6b0731000db5f9e496e35135e9ae46da859f33ad73f4f7bbba2@ec2-35-174-127-63.compute-1.amazonaws.com:5432/dbtbcqljs9ibsa
 
+export FLASK_APP="application.py" && export DATABASE_URL="postgres://idcwbdswzzaujj:5b3e32f5ffd1c6b0731000db5f9e496e35135e9ae46da859f33ad73f4f7bbba2@ec2-35-174-127-63.compute-1.amazonaws.com:5432/dbtbcqljs9ibsa"
+
+
 1. Make database tables
 Books - book_id,title, author, ISBN, 
 User - user_id, username, password, name
