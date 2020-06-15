@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    MyReadingList
+{% endblock %}
+
+{% block body %}
+<div>
+    <h1>Success, book(s) found!</h1>
+</div>
+
+<div>
+    <ul>
+        {% for book in matches %}
+            <li>{{book['title']}}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

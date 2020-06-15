@@ -5,19 +5,20 @@
 {% endblock %}
 
 {% block body %}
-<h1 class="d-flex p-2 justify-content-center mt-auto ">My Reading List Login</h1>
+<h1 class="d-flex p-2 justify-content-center mt-auto ">User Login</h1>
 
 <main class="container p-5 d-flex justify-content-center">
     <div>
         <form action="{{ url_for('login') }}" method="POST">
             <div class="form-group">
-              <label for="username">Username</label>
-              <input type="text" class="form-control" id="username" placeholder="Username" name="username">
+              <label for="username">Username</label> <p class="d-inline text-danger">*</p>
+              <input type="text" class="form-control" id="username" placeholder="Username" name="username" required>
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                <label for="password">Password</label> <p class="d-inline text-danger">*</p>
+                <input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
             </div>
+            <p class="text-danger" style="font-size: 12px;">*Required</p>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
         </div>

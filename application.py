@@ -1,10 +1,11 @@
 import os
 
-from flask import Flask, session, render_template, request
+from flask import Flask, session, render_template, request, redirect, url_for
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.security import check_password_hash, generate_password_hash
+from functools import wraps
 
 app = Flask(__name__)
 # Check for environment variable
@@ -21,12 +22,19 @@ engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
 
+
+
 @app.route("/")
 def index():
-    return render_template("index.html")
+    #Redirects user to the login screen if they are not yet logged in 
+    if not session.get("user_id"):
+        return redirect("/login")
+    else:
+        return render_template("index.html")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    session.clear()
 
     if request.method == "POST":
         username = request.form.get("username")
@@ -67,6 +75,7 @@ def register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    session.clear()
 
     if request.method == "POST":
         username = request.form.get("username")
@@ -77,11 +86,31 @@ def login():
 
         if user == None or not check_password_hash(user[2], password):
             return render_template("invalid.html", error_message="Invalid username or password", redirect="/login")
-        else:
-            return render_template("success.html")
+
+        #Updates session user ID and username after successful login and redirects to homepage
+        session["user_id"] = user[0]
+        session["user_name"] = user[1]
+        return redirect("/")
+
+
 
 
     elif request.method == "GET":
         return render_template("login.html")
 
+
+@app.route("/search", methods=["GET"])
+def search():
+    searchText = request.args.get("book-search")
+    query = "%" + searchText + "%"
+    query = query.title()
     
+    results = db.execute("SELECT * FROM books WHERE isbn LIKE :query OR title LIKE :query OR author LIKE :query LIMIT 10", {"query": query})
+    if(results.rowcount == 0):
+        return render_template("invalid.html", error_message="Error: No books found with those search parameters.")
+
+    matches = results.fetchall()
+
+    return render_template("results.html", matches=matches)
+
+

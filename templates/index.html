@@ -5,6 +5,13 @@
 {% endblock %}
 
 {% block body %}
-    <a href="/login">Login Here</a>
-    <a href="/register">Register Here</a>
+<div>
+    <h1>Search for a book:</h1>
+</div>
+<form action="/search" method="GET">
+    <div class="form-group">
+        <input class="form-control" type="text" placeholder="Search by ISBN, Title, or Author" aria-label="Search" name="book-search" required>
+    </div>
+    <button class="btn btn-primary" type="submit">Search</button>
+</form>
 {% endblock %}

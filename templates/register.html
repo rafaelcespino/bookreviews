@@ -6,28 +6,28 @@
 
 {% block body %}
 <div  class="d-flex p-2 justify-content-center mt-auto" >
-    <h1>MyReadingList Registration</h1>
+    <h1>User Registration</h1>
 </div>
 
 <div>
 <form action="{{ url_for('register') }}" method="POST">
     <div class="form-group">
-      <label for="username">Username</label>
-      <input type="text" class="form-control" id="username" placeholder="Username" name="username">
+      <label for="username">Username</label> <p class="d-inline text-danger">*</p>
+      <input type="text" class="form-control" id="username" placeholder="Username" name="username" required>
     </div>
     <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+        <label for="password">Password</label> <p class="d-inline text-danger">*</p>
+        <input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
     </div>
     <div class="form-group">
-        <label for="password">Confirm Password</label>
-        <input type="text" class="form-control" id="confirm" placeholder="Confirm Password" name="confirm">
+        <label for="password">Confirm Password</label> <p class="d-inline text-danger">*</p>
+        <input type="text" class="form-control" id="confirm" placeholder="Confirm Password" name="confirm" required>
     </div>
     <div class="form-group">
-        <label for="password">Name</label>
-        <input type="text" class="form-control" id="name" placeholder="Name" name="name">
+        <label for="password">Name</label> <p class="d-inline text-danger">*</p>
+        <input type="text" class="form-control" id="name" placeholder="Name" name="name" required>
     </div>
-    
+    <p class="text-danger" style="font-size: 12px;">*Required</p>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 </div>
