@@ -107,10 +107,20 @@ def search():
     
     results = db.execute("SELECT * FROM books WHERE isbn LIKE :query OR title LIKE :query OR author LIKE :query LIMIT 10", {"query": query})
     if(results.rowcount == 0):
-        return render_template("invalid.html", error_message="Error: No books found with those search parameters.")
+        return render_template("invalid.html", error_message="Error: No books found with those search parameters.", redirect="/")
 
     matches = results.fetchall()
 
     return render_template("results.html", matches=matches)
 
 
+@app.route("/book/<isbn>")
+def book(isbn):
+    book = db.execute("SELECT * FROM books WHERE isbn=:isbn", {"isbn":isbn}).fetchone()
+    if book == None:
+        return render_template("invalid.html", error_message="Error: No such book with ISBN found", redirect="/")
+
+    return render_template("book.html", book=book)
+
+    
+    

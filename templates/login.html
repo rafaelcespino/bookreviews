@@ -7,7 +7,7 @@
 {% block body %}
 <h1 class="d-flex p-2 justify-content-center mt-auto ">User Login</h1>
 
-<main class="container p-5 d-flex justify-content-center">
+<div class="container p-5 d-flex justify-content-center">
     <div>
         <form action="{{ url_for('login') }}" method="POST">
             <div class="form-group">
@@ -22,5 +22,9 @@
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
         </div>
-</main>
+</div>
+<div class="p-5 d-flex justify-content-center">
+    <a href="/register">Don't Have an account? Register here</a>
+ </div>
+
 {% endblock %}

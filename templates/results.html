@@ -6,15 +6,22 @@
 
 {% block body %}
 <div>
-    <h1>Success, book(s) found!</h1>
+    <h1>Results:</h1>
+    <a href="/">Search Again</a>
 </div>
 
 <div>
-    <ul>
         {% for book in matches %}
-            <li>{{book['title']}}</li>
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">{{book['title']}}</h4>
+                    <h6 class="card-subtitle mb-2 text-muted">{{book['author']}}</h6>
+                    <a href="/book/{{book['isbn']}}" class="card-link">Book Page</a>
+                    <a href="#!" class="card-link">Write a review</a>
+                </div>
+            </div>
         {% endfor %}
-    </ul>
+
 </div>
 
 {% endblock %}
