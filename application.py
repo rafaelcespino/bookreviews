@@ -114,8 +114,11 @@ def search():
     return render_template("results.html", matches=matches)
 
 
-@app.route("/book/<isbn>")
+@app.route("/book/<isbn>", methods=["GET"])
 def book(isbn):
+    if not session.get("user_id"):
+        return redirect("/login")
+        
     book = db.execute("SELECT * FROM books WHERE isbn=:isbn", {"isbn":isbn}).fetchone()
     if book == None:
         return render_template("invalid.html", error_message="Error: No such book with ISBN found", redirect="/")
@@ -123,4 +126,7 @@ def book(isbn):
     return render_template("book.html", book=book)
 
     
-    
+@app.route("/logout", methods=["GET"])
+def logout():
+    session.clear()
+    return redirect("/login")
