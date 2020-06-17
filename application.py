@@ -6,6 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.security import check_password_hash, generate_password_hash
 from functools import wraps
+import requests
 
 app = Flask(__name__)
 # Check for environment variable
@@ -114,19 +115,49 @@ def search():
     return render_template("results.html", matches=matches)
 
 
-@app.route("/book/<isbn>", methods=["GET"])
+@app.route("/book/<isbn>", methods=["GET", "POST"])
 def book(isbn):
-    if not session.get("user_id"):
-        return redirect("/login")
-        
-    book = db.execute("SELECT * FROM books WHERE isbn=:isbn", {"isbn":isbn}).fetchone()
-    if book == None:
-        return render_template("invalid.html", error_message="Error: No such book with ISBN found", redirect="/")
 
-    return render_template("book.html", book=book)
+    #Display book page if request method is GET
+    if request.method == "GET":
+        if not session.get("user_id"):
+            return redirect("/login")
+
+        book = db.execute("SELECT * FROM books WHERE isbn=:isbn", {"isbn":isbn}).fetchone()
+        if book == None:
+            return render_template("invalid.html", error_message="Error: No such book with ISBN found", redirect="/")
+
+        isbn=str(isbn)
+        res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "I6f1Rt4i8e2CIWH11kKJA", "isbns": isbn})
+        data=res.json()
+        avg_rating = data["books"][0]["average_rating"]
+        num_ratings=data["books"][0]["work_ratings_count"]
+
+        return render_template("book.html", book=book, avg_rating=avg_rating, num_ratings=num_ratings)
+
+    #Upload review if request method is POST
+    elif request.method=="POST":
+
+        isbn=str(isbn)
+        user_id = session.get("user_id")
+        rating = request.form.get("score")
+        review = request.form.get("review")
+        review = str(review)
+        book = db.execute("SELECT book_id FROM books WHERE isbn=:isbn", {"isbn":isbn})
+        book_id = book.fetchone()
+        book_id = book_id[0]
+
+        rating = int(rating)
+        book_id=int(book_id)
+        user_id=int(user_id)
+        db.execute("INSERT INTO reviews (review, user_id, book_id, rating) VALUES (:review, :user_id, :book_id, :rating)", {"review":review, "user_id":user_id, "book_id":book_id, "rating": rating})
+        db.commit()
+
+        return redirect("/")
 
     
 @app.route("/logout", methods=["GET"])
 def logout():
     session.clear()
     return redirect("/login")
+

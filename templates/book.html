@@ -6,7 +6,7 @@
 
 {% block body %}
 <div>
-    <nav class="navbar navbar-light bg-light navbar-expand-lg">
+    <nav class="navbar navbar-light bg-light navbar-expand-lg pl-1">
         <a class="navbar-brand mr-auto" href="/">Book Reviews</a>
 
         <div class="form-inline ml-auto">
@@ -15,34 +15,51 @@
     </nav>
 </div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-sm">
-            <h1>{{book['title']}}</h1>
-        </div>
-    </div>
+<div class="container pl-1">
 
     <div class="row">
-        <div class="col-sm">
+
+        <div class="col-sm-3">
+            <img src="http://covers.openlibrary.org/b/isbn/{{book['isbn']}}-M.jpg" alt="">
+        </div>
+
+        <div class="col-sm text-justify">
+            <h1>{{book['title']}}</h1>
             <h4>Author: {{book['author']}}</h4>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm">
             <h4>ISBN: {{book['isbn']}}</h4>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm">
-            <img src="http://covers.openlibrary.org/b/isbn/{{book['isbn']}}-L.jpg" alt="">
         </div>
         
     </div>
+
     <div class="row">
-        <div class="col-sm">
-            <h6>Image courtesy of Open Library Covers API</h6>
-        </div>
+        <h4>Write a review!</h4>
+        <form class="form-border" method="POST">
+            <div class="form-group col-sm">
+                <label for="score">Rate this book!</label>
+
+                <select name="score" id="score" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+
+            <div class="form-group col-sm-5">
+                <input type="text" maxlength="500" placeholder="Write a review!" name="review" required>
+            </div>
+
+            <button type="submit">Submit Review</button>
+            
+        </form>
     </div>
+
 </div>
 
 
