@@ -127,13 +127,18 @@ def book(isbn):
         if book == None:
             return render_template("invalid.html", error_message="Error: No such book with ISBN found", redirect="/")
 
+        book_id = book['book_id']
+        reviews = db.execute("SELECT * FROM reviews WHERE book_id=:book_id", {"book_id":book_id})
+
         isbn=str(isbn)
         res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "I6f1Rt4i8e2CIWH11kKJA", "isbns": isbn})
         data=res.json()
         avg_rating = data["books"][0]["average_rating"]
         num_ratings=data["books"][0]["work_ratings_count"]
 
-        return render_template("book.html", book=book, avg_rating=avg_rating, num_ratings=num_ratings)
+    
+
+        return render_template("book.html", book=book, avg_rating=avg_rating, num_ratings=num_ratings, reviews=reviews)
 
     #Upload review if request method is POST
     elif request.method=="POST":

@@ -31,12 +31,18 @@
         
     </div>
 
-    <div class="row">
-        <h4>Write a review!</h4>
-        <form class="form-border" method="POST">
-            <div class="form-group col-sm">
-                <label for="score">Rate this book!</label>
+    <div class="row mt-1">
+        <div class="col-sm-3">
+            <h4>Write a review!</h4>
+        </div>
+        
+    </div>
 
+    <div class="row mt-1">
+        
+        <form class="form-inline" method="POST">
+            <div class="form-inline col-sm">
+                <label for="score">Rate this book!</label>
                 <select name="score" id="score" required>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -58,6 +64,17 @@
             <button type="submit">Submit Review</button>
             
         </form>
+    </div>
+
+    <div>
+        {% for review in reviews %}
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">{{review['rating']}}</h4>
+                    <h6 class="card-subtitle mb-2 text-muted">{{review['review']}}</h6>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 
 </div>
